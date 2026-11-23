@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-label="Measured results on stand-in clips: spoken words 9 of 9 caught; held words 5 caught, 4 partly heard">
+  <rect width="1200" height="300" rx="18" fill="#14161c"/>
+  <text x="60" y="52" font-family="Segoe UI, system-ui, -apple-system, Helvetica, Arial, sans-serif" font-size="22" font-weight="600" fill="#e8eaf0">Measured on stand-in clips (2026-11-23)</text>
+  <text x="60" y="78" font-family="Segoe UI, system-ui, -apple-system, Helvetica, Arial, sans-serif" font-size="15" fill="#8b93a5">9 words per row, GPU, look-ahead 550 ms. Real speech with harmless stand-in words. Not real singing.</text>
+  <text x="60" y="143" font-family="Segoe UI, system-ui, -apple-system, Helvetica, Arial, sans-serif" font-size="17" fill="#e8eaf0">Spoken at normal speed</text>
+  <rect x="330.0" y="120" width="757.0" height="34" rx="5" fill="#2ecc71"/>
+  <text x="710.0" y="143" font-family="Segoe UI, system-ui, -apple-system, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#14161c" text-anchor="middle">9 caught</text>
+  <text x="60" y="205" font-family="Segoe UI, system-ui, -apple-system, Helvetica, Arial, sans-serif" font-size="17" fill="#e8eaf0">Held long (slowed down)</text>
+  <rect x="330.0" y="182" width="419.2" height="34" rx="5" fill="#2ecc71"/>
+  <text x="541.1" y="205" font-family="Segoe UI, system-ui, -apple-system, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#14161c" text-anchor="middle">5 caught</text>
+  <rect x="752.2" y="182" width="334.8" height="34" rx="5" fill="#f0b429"/>
+  <text x="921.1" y="205" font-family="Segoe UI, system-ui, -apple-system, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#14161c" text-anchor="middle">4 partly heard</text>
+  <text x="60" y="260" font-family="Segoe UI, system-ui, -apple-system, Helvetica, Arial, sans-serif" font-size="15" fill="#8b93a5">"Caught" = at least 90% of the word removed. Held words are the weak spot: the start of a long held word can still be heard.</text>
+</svg>

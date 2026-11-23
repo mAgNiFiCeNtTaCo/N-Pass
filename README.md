@@ -1,3 +1,18 @@
+<p align="center">
+  <img src="docs/img/banner.svg" alt="N-Pass: cuts your blocked words out of your stream mic before OBS hears them" width="100%">
+</p>
+
+<p align="center">
+  <a href="https://github.com/mAgNiFiCeNtTaCo/N-Pass/actions/workflows/tests.yml"><img alt="Automatic tests" src="https://github.com/mAgNiFiCeNtTaCo/N-Pass/actions/workflows/tests.yml/badge.svg"></a>
+  <img alt="Last change" src="https://img.shields.io/github/last-commit/mAgNiFiCeNtTaCo/N-Pass?style=flat-square&color=2b303b">
+  <img alt="Main language" src="https://img.shields.io/github/languages/top/mAgNiFiCeNtTaCo/N-Pass?style=flat-square&color=2b303b">
+</p>
+
+<p align="center">
+  Windows 10 and 11 · NVIDIA graphics card (about 0.8 GB) · audio never leaves your PC<br>
+  <b>Early version: not tested on a live stream yet.</b>
+</p>
+
 # N-Pass
 
 N-Pass sits between your microphone and OBS. It listens to your voice a fraction of a second
@@ -5,9 +20,67 @@ before OBS gets it. When it hears one of your blocked words, it silences that wo
 your voice passes through unchanged.
 
 It is made for singing along to Spotify on stream. It runs on your own PC. Your voice is never
-sent anywhere.
+sent anywhere. No beep, no replacement voice: the word is just gone.
 
-Written 2026-11-23. Everything under "What has been measured" was measured on this PC on that day.
+<p align="center">
+  <img src="docs/img/waveform.svg" alt="A real test clip before and after N-Pass: the blocked stand-in word is silent in the output" width="100%">
+</p>
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/img/window-main.png" alt="The Live tab: ON button, mic meter, measured delay, look-ahead slider and the caught list with masked words"></td>
+    <td width="50%"><img src="docs/img/window-settings.png" alt="The Settings tab: microphone, removal mode, recognition engine, lyric mode and the hidden blocked word list"></td>
+  </tr>
+  <tr>
+    <td align="center">Live tab (demo data). Caught words are shown masked.</td>
+    <td align="center">Settings tab. The word list stays hidden until you ask.</td>
+  </tr>
+</table>
+
+## How it works
+
+```mermaid
+flowchart LR
+    mic([Microphone]) --> buf["Look-ahead buffer<br/>holds your voice about 0.55 s"]
+    buf --> cut["Cutter<br/>15 ms fades"]
+    cut --> cable([Virtual cable]) --> obs([OBS])
+    buf -. copy .-> rec["Speech recognition<br/>on your graphics card"]
+    rec -- "cut this word" --> cut
+    lyr["Spotify + timed lyrics<br/>(optional)"] -. "risky lines" .-> rec
+    guard["Safety guard"] -. "mutes a risky line<br/>nobody checked in time" .-> cut
+```
+
+Your voice waits in the buffer while the recogniser listens to it. If a blocked word turns up, the
+cutter silences just that stretch on its way out. If recognition falls behind during a lyric line
+that contains one of your words, the safety guard mutes that line instead of letting it through
+unchecked.
+
+## How well it works so far
+
+<p align="center">
+  <img src="docs/img/results.svg" alt="Measured on stand-in clips: spoken words 9 of 9 caught; held words 5 caught and 4 partly heard" width="100%">
+</p>
+
+These numbers come from 25 short test clips of real speech with harmless stand-in words, not from
+real singing. Words spoken at normal speed were all caught. Words held for a long time are the weak
+spot. The details, and everything that has not been tested yet, are under
+[What has been measured](#what-has-been-measured).
+
+## Contents
+
+- [What it does and does not do](#what-it-does-and-does-not-do)
+- [Before you start](#before-you-start)
+- Setup: [1. virtual cable](#step-1-install-the-virtual-cable), [2. start N-Pass](#step-2-start-n-pass),
+  [3. OBS microphone](#step-3-point-obs-at-the-filtered-microphone),
+  [4. sync](#step-4-put-sound-and-picture-back-in-sync), [5. blocked words](#step-5-your-blocked-words),
+  [6. lyric mode](#step-6-lyric-mode-with-spotify-optional)
+- [The window explained](#the-window-explained) and [what each warning means](#what-each-warning-means)
+- [CPU-only mode](#cpu-only-mode), [the catch log](#the-catch-log),
+  [testing with your own voice](#testing-with-your-own-voice)
+- [Privacy](#privacy) and [troubleshooting](#troubleshooting)
+
+Written 2026-11-23. Everything under "What has been measured" was measured on one PC (RTX 3080 Ti)
+on that day.
 
 ## What it does and does not do
 
