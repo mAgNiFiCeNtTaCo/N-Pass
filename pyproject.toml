@@ -1,0 +1,35 @@
+[project]
+name = "npass"
+version = "0.1.0"
+description = "Live blocked-word filter for a stream microphone (local, no beep, no replacement voice)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy>=2.0",
+    "sounddevice>=0.5",
+    "soxr>=0.5",
+    "soundfile>=0.12",
+    "faster-whisper==1.2.1",
+    "ctranslate2==4.8.5",
+    # CUDA 12 cuBLAS + cuDNN 9 for ctranslate2 on the GPU (no CUDA toolkit install needed)
+    "nvidia-cublas-cu12==12.9.2.10; sys_platform == 'win32'",
+    "nvidia-cudnn-cu12==9.28.1.4; sys_platform == 'win32'",
+    "vosk>=0.3.45",
+    "requests>=2.32",
+    "pystray>=0.19.5",
+    "Pillow>=11",
+    "obsws-python>=1.7",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "gpu: needs the GPU speech model",
+    "slow: runs clips at real-time pace",
+]
+
+[tool.uv]
+package = false

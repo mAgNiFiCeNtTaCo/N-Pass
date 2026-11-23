@@ -1,0 +1,25 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# speech models and caches
+models/
+.cache/
+# the user's own recordings and filtered outputs stay off git
+test_clips/*
+!test_clips/README.md
+!test_clips/standin/
+out/
+# never commit tokens, settings or logs (they live in %LOCALAPPDATA%\NPass anyway)
+*.bin
+.env
+*.log
+
+# build notes and canvas state stay on this PC, not in the public repo
+.nodeterm/
+briefs/
+PROGRESS.md
+WORKFLOW.md
+WORKFLOW.html
+workflow.json
+CLAUDE.md
