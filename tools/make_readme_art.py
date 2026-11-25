@@ -80,6 +80,34 @@ def banner() -> str:
 """
 
 
+def social() -> str:
+    """1280x640 card for GitHub's "Social preview" (rendered to PNG by hand, see the README art notes)."""
+    W, H = 1280, 640
+    cols = 420
+    lo, hi = fake_voice(cols)
+    a, b = int(cols * 0.56), int(cols * 0.70)
+    fade = 10
+    gain = np.ones(cols)
+    gain[a:b] = 0
+    ramp = 0.5 - 0.5 * np.cos(np.linspace(0, np.pi, fade))
+    gain[a - fade:a] = 1 - ramp
+    gain[b:b + fade] = ramp
+    x0, w, y, h = 90, W - 180, 430, 95
+    xa, xb = x0 + w * a / cols, x0 + w * b / cols
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">
+  <rect width="{W}" height="{H}" fill="{BG}"/>
+  <text x="90" y="170" {FONT} font-size="112" font-weight="700" fill="{TEXT}">N-Pass</text>
+  <text x="94" y="232" {FONT} font-size="34" fill="{DIM}">Cuts your blocked words out of your stream mic</text>
+  <text x="94" y="276" {FONT} font-size="34" fill="{DIM}">before OBS hears them. No beep. Runs on your PC.</text>
+  <path d="{wave_path(lo, hi, x0, y, w, h)}" fill="{GREY}" opacity="0.35"/>
+  <path d="{wave_path(lo * gain, hi * gain, x0, y, w, h)}" fill="{GREEN}"/>
+  <line x1="{xa:.1f}" y1="{y - h - 12}" x2="{xa:.1f}" y2="{y + h + 12}" stroke="{LINE}" stroke-width="3" stroke-dasharray="5 6"/>
+  <line x1="{xb:.1f}" y1="{y - h - 12}" x2="{xb:.1f}" y2="{y + h + 12}" stroke="{LINE}" stroke-width="3" stroke-dasharray="5 6"/>
+  <text x="{(xa + xb) / 2:.1f}" y="{y + h + 48}" {FONT} font-size="24" fill="{DIM}" text-anchor="middle">one word, silenced</text>
+</svg>
+"""
+
+
 def waveform() -> str | None:
     src = ROOT / "test_clips" / "standin" / f"{CLIP}.flac"
     flt = RUN / f"{CLIP}.filtered.wav"
@@ -143,6 +171,7 @@ def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "banner.svg").write_bytes(banner().encode("utf-8"))
     (OUT / "results.svg").write_bytes(results().encode("utf-8"))
+    (OUT / "social-preview.svg").write_bytes(social().encode("utf-8"))
     wf = waveform()
     if wf is None:
         print("waveform.svg skipped: run tools/run_clips.py on test_clips/standin first "
